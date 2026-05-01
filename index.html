@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>八奇聖典 — 《不講武德》</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:     #F2EBE0;
+      --card:   #FDFAF6;
+      --text:   #27180E;
+      --sub:    #7A6050;
+      --muted:  #B3A090;
+      --accent: #B85C38;
+      --gold:   #9C7A3C;
+      --border: rgba(139, 110, 85, 0.13);
+      --shadow: rgba(44, 26, 10, 0.07);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans TC', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════ Animations ═══════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scaleX {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    @keyframes heartPop {
+      0%   { transform: scale(1); }
+      35%  { transform: scale(1.55); }
+      65%  { transform: scale(0.87); }
+      100% { transform: scale(1); }
+    }
+
+    .anim-0 { animation: fadeUp 0.65s 0.05s cubic-bezier(0.22,1,0.36,1) both; }
+    .anim-1 { animation: fadeUp 0.65s 0.18s cubic-bezier(0.22,1,0.36,1) both; }
+    .anim-2 { animation: scaleX 0.6s 0.38s cubic-bezier(0.22,1,0.36,1) both; transform-origin: center; }
+    .anim-3 { animation: fadeIn 0.5s 0.52s ease both; }
+
+    /* ═══════════ Header ═══════════ */
+    .header {
+      text-align: center;
+      padding: 3.2rem 1.5rem 1.8rem;
+    }
+
+    .alliance-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.45em;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(2.2rem, 11vw, 3.8rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      margin: 0.55rem 0 0;
+      letter-spacing: 0.05em;
+    }
+
+    .title em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .header-rule {
+      display: block;
+      width: 36px;
+      height: 2px;
+      background: var(--accent);
+      margin: 1rem auto 0;
+      opacity: 0.7;
+    }
+
+    .header-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.3em;
+      margin-top: 0.7rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 300;
+    }
+
+    /* ═══════════ Cards ═══════════ */
+    .cards {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0.5rem 1.1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.3rem 1.4rem 1.1rem;
+      box-shadow: 0 2px 14px var(--shadow);
+      opacity: 0;
+      transition: box-shadow 0.22s ease, transform 0.22s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.visible {
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 28px rgba(44,26,10,0.11);
+      transform: translateY(-2px);
+    }
+
+    /* Top accent line */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 1.4rem; right: 1.4rem;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(184,92,56,0.25), transparent);
+    }
+
+    /* Response card */
+    .card-resp {
+      background: #FFF8F1;
+      border-color: rgba(156, 122, 60, 0.2);
+    }
+    .card-resp::before {
+      background: linear-gradient(90deg, transparent, rgba(156,122,60,0.3), transparent);
+    }
+
+    /* Tag */
+    .tag {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag::after {
+      content: '';
+      height: 1px;
+      width: 20px;
+      background: rgba(184,92,56,0.25);
+    }
+    .tag-gold { color: var(--gold); }
+    .tag-gold::after { background: rgba(156,122,60,0.3); }
+
+    /* Quote text */
+    .q-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.95;
+      color: var(--text);
+    }
+
+    /* Annotation */
+    .q-note {
+      margin-top: 0.8rem;
+      padding-top: 0.7rem;
+      border-top: 1px solid var(--border);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--sub);
+      line-height: 1.85;
+    }
+
+    /* Card footer */
+    .card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 0.9rem;
+    }
+
+    /* Like button */
+    .like-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.68rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 400;
+      transition: border-color 0.18s, color 0.18s, background 0.18s;
+    }
+    .like-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(184,92,56,0.05);
+    }
+    .like-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(184,92,56,0.07);
+    }
+    .like-btn.pop svg {
+      animation: heartPop 0.38s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ═══════════ Preface ═══════════ */
+    .preface {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 1.1rem 1.2rem;
+    }
+
+    .preface-box {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      background: rgba(156,122,60,0.04);
+      opacity: 0;
+    }
+
+    .preface-box.visible {
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .preface-tag {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .preface-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.8rem;
+      line-height: 2;
+      color: var(--sub);
+    }
+
+    /* ═══════════ Footer ═══════════ */
+    .footer {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 2.5rem 1.1rem 4.5rem;
+      text-align: center;
+    }
+    .footer-rule {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.3rem;
+    }
+    .footer-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.28em;
+      line-height: 2.3;
+      font-weight: 400;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .card { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <p class="alliance-name anim-0">《不講武德》</p>
+  <h1 class="title anim-1">八奇<em>聖典</em></h1>
+  <span class="header-rule anim-2"></span>
+  <p class="header-sub anim-3">盟主語錄典藏</p>
+</header>
+
+<!-- Preface -->
+<section class="preface">
+  <div class="preface-box" id="preface-box">
+    <p class="preface-tag">編者按</p>
+    <p class="preface-text">本語錄忠實紀錄盟主八奇之治盟理念，並納入其對盟友各項請示之最高指引。望諸位勤加研讀，領悟聖意，共創霸業。</p>
+  </div>
+</section>
+
+<!-- Cards -->
+<main class="cards" id="cards"></main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-rule"></div>
+  <p class="footer-text">武德之巔 ‧ 唯我八奇</p>
+  <p class="footer-text">霸業既定 ‧ 四海伏首</p>
+  <p class="footer-text" style="margin-top:0.4rem; opacity:.55;">武德元年 ‧ 史官謹誌</p>
+</footer>
+
+<script>
+const DATA = [
+  { id:1,  type:'q', tag:'訓語一',    text:'＠王竹 你他媽0武勳', note:null },
+  { id:2,  type:'q', tag:'訓語二',    text:'睡前記得調動！媽的 不給小課好看他不知道誰是老子', note:null },
+  { id:3,  type:'q', tag:'訓語三',    text:'就覺得很蒼蠅～正面又打不贏，一直跑來遠處搞東搞西', note:null },
+  { id:4,  type:'q', tag:'訓語四',    text:'不要上頭⋯你們好像一輩子沒看過女人 突然出現一個歐巴桑一樣就撲上去', note:null },
+  { id:5,  type:'q', tag:'訓語四補述', text:'你們好像一輩子沒看過女人 突然出現一個歐巴桑一樣就撲上去！就算是火海也要上', note:null },
+  { id:6,  type:'q', tag:'訓語五',    text:'要讓他們想到我們 就有被灼傷的記憶', note:null },
+  { id:7,  type:'q', tag:'訓語六',    text:'低趙盃', note:null },
+  { id:8,  type:'r', tag:'眾志迴響',  text:'我等更喜『撕趙盃』！', note:'盟主斷言來季大勢，盟友隨即領旨，誓以撕裂敵陣之志共赴之。' },
+  { id:9,  type:'q', tag:'訓語七',    text:'難道我外號加藤你也知道⋯', note:null },
+  { id:10, type:'q', tag:'訓語八',    text:'這盟太紅了⋯我一個月卡玩家就靠你們了⋯', note:null },
+  { id:11, type:'q', tag:'訓語九',    text:'你要主動幫她儲值，儲個皮克敏什麼的，他就不會管你了。', note:'盟內「後勤維穩與家庭安撫」之最高指導。欲平天下必先安其內，以極低成本換取作戰之絕對自由，實乃高明之戰術投資。' },
+  { id:12, type:'q', tag:'訓語十',    text:'我是真的被圍的很不爽～日後必定要討回來', note:null },
+];
+
+/* ── Likes (localStorage) ── */
+const LK = 'baq_lk4', LD = 'baq_ld4';
+const getLikes = () => { try { return JSON.parse(localStorage.getItem(LK) || '{}'); } catch { return {}; } };
+const getLiked = () => { try { return JSON.parse(localStorage.getItem(LD) || '[]'); } catch { return []; } };
+const saveLikes = o => localStorage.setItem(LK, JSON.stringify(o));
+const saveLiked = a => localStorage.setItem(LD, JSON.stringify(a));
+
+function toggleLike(id) {
+  const lk = getLikes(), ld = getLiked();
+  const i = ld.indexOf(id), was = i !== -1;
+  was ? ld.splice(i, 1) : ld.push(id);
+  lk[id] = Math.max(0, (lk[id] || 0) + (was ? -1 : 1));
+  saveLikes(lk); saveLiked(ld);
+  return !was;
+}
+
+const heartSvg = f => `<svg width="13" height="13" viewBox="0 0 24 24" fill="${f ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+
+/* ── Render ── */
+function render() {
+  const lk = getLikes(), ld = getLiked();
+  document.getElementById('cards').innerHTML = DATA.map((q, i) => {
+    const count  = lk[q.id] || 0;
+    const active = ld.includes(q.id);
+    const isResp = q.type === 'r';
+    return `
+      <article class="card${isResp ? ' card-resp' : ''}" data-delay="${780 + i * 80}">
+        <p class="tag ${isResp ? 'tag-gold' : ''}">${q.tag}</p>
+        <p class="q-text">「${q.text}」</p>
+        ${q.note ? `<p class="q-note">${q.note}</p>` : ''}
+        <div class="card-foot">
+          <button class="like-btn${active ? ' active' : ''}" onclick="handleLike(${q.id}, this)" aria-label="按讚">
+            ${heartSvg(active)}<span>${count}</span>
+          </button>
+        </div>
+      </article>`;
+  }).join('');
+
+  setTimeout(() => {
+    document.getElementById('preface-box').classList.add('visible');
+  }, 680);
+
+  document.querySelectorAll('.card').forEach(el => {
+    const ms = parseInt(el.dataset.delay) || 0;
+    setTimeout(() => el.classList.add('visible'), ms);
+  });
+}
+
+function handleLike(id, btn) {
+  const now = toggleLike(id);
+  const lk  = getLikes();
+  btn.querySelector('span').textContent = lk[id] || 0;
+  btn.querySelector('svg').setAttribute('fill', now ? 'currentColor' : 'none');
+  btn.classList.toggle('active', now);
+  btn.classList.add('pop');
+  btn.addEventListener('animationend', () => btn.classList.remove('pop'), { once: true });
+}
+
+render();
+</script>
+</body>
+</html>
