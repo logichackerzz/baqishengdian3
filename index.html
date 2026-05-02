@@ -190,6 +190,17 @@
     .tag-gold { color: var(--gold); }
     .tag-gold::after { background: rgba(156,122,60,0.3); }
 
+    /* Era label */
+    .era {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.6rem;
+      margin-top: -0.3rem;
+    }
+
     /* Quote text */
     .q-text {
       font-family: 'Noto Serif TC', serif;
@@ -405,11 +416,11 @@ const DATA = [
   { id:9,  type:'q', tag:'訓語七',    text:'難道我外號加藤你也知道⋯', note:null },
   { id:10, type:'q', tag:'訓語八',    text:'這盟太紅了⋯我一個月卡玩家就靠你們了⋯', note:null },
   { id:11, type:'q', tag:'訓語九',    text:'你要主動幫她儲值，儲個皮克敏什麼的，他就不會管你了。', note:'盟內「後勤維穩與家庭安撫」之最高指導。欲平天下必先安其內，以極低成本換取作戰之絕對自由，實乃高明之戰術投資。' },
-  { id:12, type:'q', tag:'訓語十',    text:'我是真的被圍的很不爽～日後必定要討回來', note:null },
-  { id:13, type:'q', tag:'訓語十一',  text:'一定會有一天一口氣射在他們臉上，到時候都給我用射　到時候都給我用射的', note:null },
-  { id:14, type:'q', tag:'訓語十二',  text:'逆境才會有核心　我一直堅信，一起走過逆境的兄弟才會長久', note:null },
-  { id:15, type:'q', tag:'訓語十三',  text:'我先把這個0武勳的踢了', note:'村夫夠慘了 還是租來的' },
-  { id:16, type:'q', tag:'訓語十四',  text:'兄弟們 回了一口氣 該出來揍他們了！', note:null },
+  { id:12, type:'q', tag:'訓語十',    era:'S3 · 困守河北', text:'我是真的被圍的很不爽～日後必定要討回來', note:null },
+  { id:13, type:'q', tag:'訓語十一',  era:'S3 · 困守河北', text:'一定會有一天一口氣射在他們臉上，到時候都給我用射　到時候都給我用射的', note:null },
+  { id:14, type:'q', tag:'訓語十二',  era:'S3 · 困守河北', text:'逆境才會有核心　我一直堅信，一起走過逆境的兄弟才會長久', note:null },
+  { id:15, type:'q', tag:'訓語十三',  era:'S3 · 困守河北', text:'我先把這個0武勳的踢了', note:'村夫夠慘了 還是租來的' },
+  { id:16, type:'q', tag:'訓語十四',  era:'S3 · 困守河北', text:'兄弟們 回了一口氣 該出來揍他們了！', note:null },
 ];
 
 /* ── Likes (localStorage) ── */
@@ -440,6 +451,7 @@ function render() {
     return `
       <article class="card${isResp ? ' card-resp' : ''}" data-delay="${780 + i * 80}">
         <p class="tag ${isResp ? 'tag-gold' : ''}">${q.tag}</p>
+        ${q.era ? `<p class="era">${q.era}</p>` : ''}
         <p class="q-text">「${q.text}」</p>
         ${q.note ? `<p class="q-note">${q.note}</p>` : ''}
         <div class="card-foot">
