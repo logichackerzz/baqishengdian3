@@ -285,6 +285,43 @@
       color: var(--sub);
     }
 
+    /* ═══════════ Announcement ═══════════ */
+    .announcement {
+      max-width: 480px;
+      margin: 1.8rem auto 0;
+      padding: 0 1.1rem 0.5rem;
+    }
+
+    .announcement-box {
+      border: 1px solid rgba(156,122,60,0.22);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 1.1rem 1.3rem;
+      background: rgba(156,122,60,0.05);
+      opacity: 0;
+    }
+
+    .announcement-box.visible {
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    .announcement-tag {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+    }
+
+    .announcement-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.82rem;
+      line-height: 2.1;
+      color: var(--sub);
+      white-space: pre-line;
+    }
+
     /* ═══════════ Footer ═══════════ */
     .footer {
       max-width: 480px;
@@ -332,6 +369,20 @@
 
 <!-- Cards -->
 <main class="cards" id="cards"></main>
+
+<!-- Announcement -->
+<section class="announcement">
+  <div class="announcement-box" id="announcement-box">
+    <p class="announcement-tag">治盟公告</p>
+    <p class="announcement-text">另外跟大家說一下
+剛剛在線人數15x 其實很多的
+我們有些是小號 有些是開季收的不活躍號
+
+大多人都盡力了，有的沒糧沒兵，有的只是剛好有事沒法全程跟完
+群裡大部分都是從s1一起打到現在的
+相信盟友</p>
+  </div>
+</section>
 
 <!-- Footer -->
 <footer class="footer">
@@ -401,6 +452,10 @@ function render() {
   setTimeout(() => {
     document.getElementById('preface-box').classList.add('visible');
   }, 680);
+
+  setTimeout(() => {
+    document.getElementById('announcement-box').classList.add('visible');
+  }, 900 + DATA.length * 80);
 
   document.querySelectorAll('.card').forEach(el => {
     const ms = parseInt(el.dataset.delay) || 0;
