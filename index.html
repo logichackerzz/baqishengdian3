@@ -226,8 +226,34 @@
     .card-foot {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       margin-top: 0.9rem;
+    }
+
+    /* Copy button */
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.68rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 400;
+      transition: border-color 0.18s, color 0.18s, background 0.18s;
+    }
+    .copy-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(156,122,60,0.05);
+    }
+    .copy-btn.copied {
+      border-color: var(--gold);
+      color: var(--gold);
     }
 
     /* Like button */
@@ -455,6 +481,10 @@ function render() {
         <p class="q-text">「${q.text}」</p>
         ${q.note ? `<p class="q-note">${q.note}</p>` : ''}
         <div class="card-foot">
+          <button class="copy-btn" onclick="handleCopy(${q.id}, \`${q.text}\`, \`${q.tag}\`, this)" aria-label="複製">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>複製</span>
+          </button>
           <button class="like-btn${active ? ' active' : ''}" onclick="handleLike(${q.id}, this)" aria-label="按讚">
             ${heartSvg(active)}<span>${count}</span>
           </button>
@@ -473,6 +503,18 @@ function render() {
   document.querySelectorAll('.card').forEach(el => {
     const ms = parseInt(el.dataset.delay) || 0;
     setTimeout(() => el.classList.add('visible'), ms);
+  });
+}
+
+function handleCopy(id, text, tag, btn) {
+  const formatted = `「${text}」\n— 八奇聖典 · ${tag}`;
+  navigator.clipboard.writeText(formatted).then(() => {
+    btn.querySelector('span').textContent = '已複製';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.querySelector('span').textContent = '複製';
+      btn.classList.remove('copied');
+    }, 2000);
   });
 }
 
