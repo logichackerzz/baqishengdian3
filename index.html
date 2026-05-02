@@ -118,6 +118,22 @@
       margin-top: 0.7rem;
       font-family: 'Noto Sans TC', sans-serif;
       font-weight: 300;
+      min-height: 1.2em;
+    }
+
+    .header-sub::after {
+      content: '|';
+      animation: blink 0.8s step-end infinite;
+      margin-left: 1px;
+      opacity: 1;
+    }
+
+    .header-sub.done::after {
+      display: none;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
     }
 
     /* ═══════════ Cards ═══════════ */
@@ -393,7 +409,7 @@
   <p class="alliance-name anim-0">《不講武德》</p>
   <h1 class="title anim-1">八奇<em>聖典</em></h1>
   <span class="header-rule anim-2"></span>
-  <p class="header-sub anim-3">盟主語錄典藏</p>
+  <p class="header-sub" id="typewriter"></p>
 </header>
 
 <!-- Preface -->
@@ -529,6 +545,18 @@ function handleLike(id, btn) {
 }
 
 render();
+
+/* ── Typewriter ── */
+(function() {
+  const el = document.getElementById('typewriter');
+  const text = '盟主語錄典藏';
+  let i = 0;
+  setTimeout(function tick() {
+    el.textContent = text.slice(0, ++i);
+    if (i < text.length) setTimeout(tick, 120);
+    else el.classList.add('done');
+  }, 600);
+})();
 </script>
 </body>
 </html>
